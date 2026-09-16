@@ -28,5 +28,9 @@ git remote add origin https://github.com/LuisGonzalez778/ProyectoVue
 ```
 git commit -m "Nombre del Commit" 
 ```
+### Push Proyect
+```
+git push origin main
+```
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
