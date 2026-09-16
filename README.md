@@ -1,35 +1,32 @@
-# proyecto
+# ProyectoVue
 
 ## Project setup
 ```
 npm install
 ```
-
 ### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
+### Create Git Repository
 ```
-npm run build
+git init
 ```
-
-### Lints and fixes files
+### Remove Remote Repository
 ```
-npm run lint
+git remote remove origin
 ```
 ### Clone Proyect
 ```
-git clone 
-```
-### Install Proyect
-```
-npm install
+git clone https://github.com/LuisGonzalez778/ProyectoVue
 ```
 ### Remote Repository Proyect
 ```
 git remote add origin https://github.com/LuisGonzalez778/ProyectoVue
+```
+### Commit Proyect
+```
+git commit -m "Nombre del Commit" 
 ```
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
