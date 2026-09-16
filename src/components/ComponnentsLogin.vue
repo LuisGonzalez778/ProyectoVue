@@ -7,7 +7,7 @@
 
         <div class="columna-formulario">
             <div class="barra-superior">
-                <router-link to="/principal" class="link-registrate">Volver</router-link>
+                <router-link to="/" class="link-registrate">Volver</router-link>
                 <span class="texto-cuenta">¿No tienes cuenta?</span>
                 <router-link to="/registrar" class="link-registrate">Regístrate</router-link>
             </div>

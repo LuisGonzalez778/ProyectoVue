@@ -3,7 +3,7 @@
 
         <div class="columna-formulario">
             <div class="barra-superior">
-                <router-link to="/principal" class="link-ingresar">Volver</router-link>
+                <router-link to="/" class="link-ingresar">Volver</router-link>
                 <span class="texto-cuenta">¿Ya tiene una cuenta?</span>
                 <router-link to="/login" class="link-ingresar">Ingresar</router-link>
             </div>

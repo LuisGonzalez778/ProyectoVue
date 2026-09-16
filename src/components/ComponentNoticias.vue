@@ -1,247 +1,128 @@
 <template>
+<body class="noticias-page">
     <menu class="menu open-sans">
         <div class="menu-top">
-            <img src="@/assets/logo1.png " alt="Logo">
+            <img src="@/assets/logo1.png" alt="Logo">
             <div class="acciones">
-                <router-link class="btn-registrar" to="/registrar">Registrar</router-link>
-                <router-link class="btn-ingresar" to="/login">Ingresar</router-link>
+                <button class="btn-registrar"><router-link to="/registrar">Registrar</router-link></button>
+                <button class="btn-ingresar"><router-link to="/login">Ingresar</router-link></button>
             </div>
-            <button
-                class="btn-hamburguesa"
-                :class="{ activo: menuAbierto }"
-                @click="toggleMenu"
-                :aria-label="menuAbierto ? 'Cerrar menú' : 'Abrir menú'"
-                :aria-expanded="menuAbierto"
-            >
+            <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Abrir menú" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
-        <nav class="navegacion" :class="{ 'nav-abierta': menuAbierto }">
-            <ul class="navegacion-lista">
-                <li class="item-menu item-menu-underline"><router-link to="/">Inicio</router-link></li>
-                <li class="item-menu item-menu-underline">Que es</li>
-                <li class="item-menu item-menu-underline">Transparencia</li>
-                <li class="item-menu item-menu-underline">Gestion Tecnica</li>
-                <li class="item-menu item-menu-underline"><a href>Atencion Usuario</a></li>
-            </ul>
+        <nav class="navegacion" id="navegacion">
+            <li class="item-menu item-menu-underline"><router-link to="/">Inicio</router-link></li>
+            <li class="item-menu item-menu-underline">Que es</li>
+            <li class="item-menu item-menu-underline">Transparencia</li>
+            <li class="item-menu item-menu-underline">Gestion Tecnica</li>
+            <li class="item-menu item-menu-underline"><a href="atencionUsuario.html">Atencion Usuario</a></li>
             <div class="acciones-mobile">
-                <a class="btn-registrar" href="registrar.html">Registrar</a>
-                <a class="btn-ingresar" href="login.html">Ingresar</a>
+                <button class="btn-registrar"><router-link to="/registrar">Registrar</router-link></button>
+                <button class="btn-ingresar"><router-link to="/login">Ingresar</router-link></button>
             </div>
         </nav>
     </menu>
 
-    <section class="banner">
-        <section id="banner" class="banner-slider" :style="estiloSlider">
-            <div class="slide" v-for="(slide, index) in slides" :key="index">
-                <img class="image" :src="slide.src" :alt="slide.alt">
+    <div class="banner-fila noticias-banner">
+        <h1>Noticias del Sistema de Transporte Público</h1>
+        <h2>Encuentra las últimas novedades sobre las nuevas rutas, las mejoras ambientales y los proyectos de infraestructura que transforman la movilidad urbana.</h2>
+    </div>
+
+    <main class="contenido-principal open-sans">
+        <section class="seccion-noticias">
+            <h2 class="titulo-seccion">Últimas noticias</h2>
+            <div class="grid-noticias">
+                <article class="noticia">
+                    <!-- HACERLE V-FOR A ESTAS IMAGENES -->
+                    <img src="imagenes/bus1.jpeg" alt="Buses eléctricos" class="img-noticia">
+                    <h3>Inauguración de la nueva línea eléctrica urbana</h3>
+                    <p class="texto-noticia">El sistema de transporte presentó hoy la nueva línea de buses eléctricos que cubrirá 12 rutas principales de la ciudad, reduciendo las emisiones de CO2 en un 45% y mejorando la frecuencia en horas pico.</p>
+                </article>
+                <article class="noticia">
+                    <img src="imagenes/buselectrico.jpg" alt="Bus eléctrico" class="img-noticia">
+                    <h3>Tarifa integrada beneficiará a estudiantes y adultos mayores</h3>
+                    <p class="texto-noticia">A partir del próximo mes, el plan de tarifa integrada permitirá transbordos gratuitos entre buses, metro y teleférico durante 90 minutos para pasajeros con carnés estudiantiles y de tercera edad.</p>
+                </article>
+                <article class="noticia">
+                    <img src="imagenes/buses.jpg" alt="Nuevas estaciones" class="img-noticia">
+                    <h3>15 nuevas estaciones con accesibilidad total</h3>
+                    <p class="texto-noticia">Las nuevas estaciones incluyen ascensores, rampas, señalización táctil para personas con discapacidad visual y zonas de cicloparqueadero, optimizando el acceso para todos los ciudadanos.</p>
+                </article>
+                <article class="noticia">
+                    <img src="imagenes/busetas.jpg" alt="Control digital" class="img-noticia">
+                    <h3>Centro de control digital en tiempo real</h3>
+                    <p class="texto-noticia">Se abrió un nuevo centro de monitoreo que permite a los operadores gestionar la flota en tiempo real, reducir retrasos y alertar sobre cambios en el servicio durante contingencias climatológicas.</p>
+                </article>
+                <article class="noticia">
+                    <img src="imagenes/troll.png" alt="Movilidad sostenible" class="img-noticia">
+                    <h3>Campaña ciudadana por una movilidad sostenible</h3>
+                    <p class="texto-noticia">El programa "Movilidad Responsable" invita a los usuarios a participar en jornadas de educación vial, reducir el uso de autos particulares y aprovechar el transporte público integrado.</p>
+                </article>
+                <!-- HACERLE V-FOR A ESTAS IMAGENES -->
             </div>
         </section>
-
-        <button class="flotante atras" @click="moverAtras">‹</button>
-        <button class="flotante adelante" @click="moverAdelante">›</button>
-
-        <section id="content-point" class="content-point">
-            <div
-                v-for="(slide, index) in slides"
-                :key="index"
-                class="point"
-                :class="{ active: index === slideActual }"
-                @click="irASlide(index)"
-            ></div>
-        </section>
-    </section>
-
-    <section class="banner-secundario">
-        <!-- <img class="img-banner-secundario" src="" alt=""> -->
-    </section>
-
-    <div class="contenido-principal open-sans">
-
-        <div class="columna-izquierda">
-            <section class="seccion-noticias">
-                <h2 class="titulo-seccion">Noticias</h2>
-                <div class="grid-noticias">
-                    <div class="noticia">
-                        <img src="@/assets/bus.jpeg" alt="Nueva flota de buses eléctricos" class="img-noticia">
-                        <p class="texto-noticia">
-                            Nueva flota de buses eléctricos llega a la ciudad mejorando la calidad del aire y reduciendo emisiones de CO2 en un 40% durante el primer semestre del año.
-                        </p>
-                    </div>
-                    <div class="noticia">
-                        <img src="@/assets/imagenes/datafono.jpg" alt="Sistema de pago integrado" class="img-noticia">
-                        <p class="texto-noticia">
-                            Sistema de pago integrado facilita el acceso a todos los medios de transporte público con una sola tarjeta ciudadana recargable en toda la ciudad.
-                        </p>
-                    </div>
-                    <div class="noticia">
-                        <img src="@/assets/imagenes/rutabus.jpg" alt="Nuevas rutas intermunicipales" class="img-noticia">
-                        <p class="texto-noticia">
-                            Nuevas rutas intermunicipales reducen tiempos de desplazamiento hasta en un 30% para miles de usuarios diarios que viajan entre municipios.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="cta-noticias">
-                    <!-- <a class="btn-ver-mas" href="noticias.html">Ver mas noticias</a> -->
-                    <router-link class="btn-ver-mas" to="/noticias">Ver mas noticias</router-link>
-                </div>
-            </section>
-
-            <section class="seccion-anuncios">
-                <h2 class="titulo-seccion">Anuncios</h2>
-
-                <div class="anuncio">
-                    <p>
-                        El Ministerio de Transporte anuncia la implementación de nuevas rutas de transporte masivo para las zonas periféricas de la ciudad. Este proyecto beneficiará a más de 200,000 habitantes que actualmente no cuentan con acceso directo al sistema integrado de transporte. Las obras de infraestructura comenzarán el próximo trimestre con una inversión inicial de $150 mil millones de pesos.
-                    </p>
-                    <p>
-                        Se habilitarán 15 nuevas estaciones distribuidas estratégicamente en los barrios de mayor densidad poblacional. Cada estación contará con zonas de cicloparqueadero, accesibilidad para personas con movilidad reducida y tecnología de información en tiempo real sobre llegadas y capacidad de los vehículos. La ciudadanía podrá participar en las audiencias públicas programadas para los próximos meses y hacer valer su derecho a la participación en la planificación urbana.
-                    </p>
-                </div>
-
-                <div class="anuncio">
-                    <p>
-                        Actualización del sistema de recaudo: a partir del 1 de abril entrará en vigencia la nueva tarifa integrada que permitirá realizar transbordos gratuitos entre bus, metro y cable durante un período de 90 minutos. Esta medida busca incentivar el uso del transporte público y reducir la congestión vehicular en las horas pico.
-                    </p>
-                    <p>
-                        Los usuarios podrán recargar su tarjeta en cualquiera de los 450 puntos habilitados en toda el área metropolitana, incluyendo supermercados, farmacias y estaciones de servicio. También se habilitará la recarga virtual a través de la aplicación oficial. Para los adultos mayores, personas con discapacidad y estudiantes de estratos 1, 2 y 3, se mantienen los subsidios y descuentos especiales vigentes.
-                    </p>
-                </div>
-            </section>
-
-        </div>
 
         <aside class="sidebar">
-            <input type="text" class="buscador" v-model="busqueda">
-
-            <div class="sidebar-texto">
-                <p>Consulta rutas, horarios y tarifas del sistema integrado de transporte público metropolitano en tiempo real desde cualquier dispositivo.</p>
-                <p>Descarga la app oficial y accede a información actualizada sobre el estado del servicio, alertas y novedades del sistema de movilidad.</p>
-                <p>Reporta inconvenientes y comunícate directamente con los operadores a través del canal oficial de atención ciudadana.</p>
-            </div>
-
-            <div class="sidebar-imagen">
-                <img src="imagenes/bank.png" alt="Servicios bancarios" class="img-sidebar">
-            </div>
-            <div class="sidebar-imagen">
-                <img src="@/assets/bus.jpeg" alt="Comunidad" class="img-sidebar">
-            </div>
-            <div class="sidebar-imagen">
-                <img src="imagenes/wallet.jpg" alt="Wallet" class="img-sidebar">
-            </div>
+            <h3>Área de consulta</h3>
+            <p>Descarga la app oficial para ver rutas, horarios y alertas en tiempo real.</p>
+            <p>Participa en las audiencias públicas y consulta tus derechos como usuario del sistema.</p>
+            <img src="img/trabajo.png" alt="Transporte" class="img-sidebar">
         </aside>
-
-    </div>
+    </main>
 
     <footer class="footer open-sans">
         <div class="footer-contenido">
             <div class="footer-marca">
-            <img src="@/assets/logo1.png" alt="Logo">
+                <h2 class="footer-logo">Logo</h2>
                 <div class="footer-direccion">
                     <p><strong>Address:</strong></p>
                     <p>123 Main Street, City</p>
                     <p>State Province, Country</p>
                 </div>
                 <div class="footer-redes">
-                    <li class="fa fa-instagram"></li>
-                    <li class="fa fa-facebook"></li>
-                    <li class="fa fa-twitter"></li>
+                    <i class="fa fa-instagram"></i>
+                    <i class="fa fa-facebook"></i>
+                    <i class="fa fa-twitter"></i>
                 </div>
             </div>
             <div class="footer-columnas">
                 <div class="footer-columna">
                     <h4 class="footer-titulo-col">Column one</h4>
-                    <ul class="footer-lista">
-                        <li class="footer-link">Link one</li>
-                        <li class="footer-link">Link two</li>
-                        <li class="footer-link">Link three</li>
-                        <li class="footer-link">Link four</li>
-                    </ul>
+                    <li class="footer-link">Link one</li>
+                    <li class="footer-link">Link two</li>
+                    <li class="footer-link">Link three</li>
+                    <li class="footer-link">Link four</li>
                 </div>
                 <div class="footer-columna">
                     <h4 class="footer-titulo-col">Column two</h4>
-                    <ul class="footer-lista">
-                        <li class="footer-link">Link five</li>
-                        <li class="footer-link">Link six</li>
-                        <li class="footer-link">Link seven</li>
-                        <li class="footer-link">Link eight</li>
-                    </ul>
+                    <li class="footer-link">Link five</li>
+                    <li class="footer-link">Link six</li>
+                    <li class="footer-link">Link seven</li>
+                    <li class="footer-link">Link eight</li>
                 </div>
                 <div class="footer-columna">
                     <h4 class="footer-titulo-col">Column three</h4>
-                    <ul class="footer-lista">
-                        <li class="footer-link">Link nine</li>
-                        <li class="footer-link">Link ten</li>
-                        <li class="footer-link">Link eleven</li>
-                        <li class="footer-link">Link twelve</li>
-                    </ul>
+                    <li class="footer-link">Link nine</li>
+                    <li class="footer-link">Link ten</li>
+                    <li class="footer-link">Link eleven</li>
+                    <li class="footer-link">Link twelve</li>
                 </div>
             </div>
         </div>
     </footer>
+</body>
 </template>
 
-<script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+<script>
+export default {
 
-
-import busImg from '@/assets/bus.jpeg'
-import busElectricoImg from '@/assets/imagenes/buselectrico.jpg'
-import busesImg from '@/assets/imagenes/buses.jpg'
-import busetasImg from '@/assets/imagenes/busetas.jpg'
-import imagesImg from '@/assets/imagenes/images.jpg'
-
-const slides = [
-    { src: busImg, alt: 'Slide 1' },
-    { src: busElectricoImg, alt: 'Slide 2' },
-    { src: busesImg, alt: 'Slide 3' },
-    { src: busetasImg, alt: 'Slide 4' },
-    { src: imagesImg, alt: 'Slide 5' },
-]
-
-const slideActual = ref(0)
-let autoplayId = null
-
-const estiloSlider = computed(() => ({
-    transform: `translateX(-${slideActual.value * 100}vw)`
-}))
-
-function irASlide(index) {
-    slideActual.value = index
 }
-
-function moverAdelante() {
-    slideActual.value = (slideActual.value + 1) % slides.length
-}
-
-function moverAtras() {
-    slideActual.value = (slideActual.value - 1 + slides.length) % slides.length
-}
-
-function iniciarAutoplay() {
-    autoplayId = setInterval(moverAdelante, 5000)
-}
-
-function detenerAutoplay() {
-    clearInterval(autoplayId)
-}
-
-onMounted(iniciarAutoplay)
-onUnmounted(detenerAutoplay)
-
-const menuAbierto = ref(false)
-
-function toggleMenu() {
-    menuAbierto.value = !menuAbierto.value
-}
-
-const busqueda = ref('')
 </script>
 
-<style scoped>
+<style>
 *{
     padding: 0;
     margin: 0;
@@ -330,55 +211,46 @@ const busqueda = ref('')
 
 .btn-registrar {
     padding: 7px 18px;
-    
+    background: #ffffff;
     border: 1.5px solid #ffffff;
     color: #ffffff;
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
     cursor: pointer;
     border-radius: 3px;
-    text-decoration: none;
-    display: inline-block;
 }
 
 .btn-registrar:hover {
     background-color: #0CC200;
-    border-color: #0CC200;
+    border: #0CC200;
     color: #fff;
 }
 
 .btn-ingresar {
     padding: 7px 18px;
-   
+    background: #ffffff;
     border: 1.5px solid #ffffff;
     color: #fff;
     font-family: "Open Sans", sans-serif;
     font-size: 14px;
     cursor: pointer;
     border-radius: 3px;
-    text-decoration: none;
-    display: inline-block;
 }
 
 .btn-ingresar:hover {
     background-color: #0CC200;
-    border-color: #0CC200;
+    border: #0CC200;
 }
 
 .navegacion {
     width: 100%;
-    border-top: 1px solid #eee;
-    padding: 0 24px;
-}
-
-.navegacion-lista {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     list-style: none;
     gap: 0;
-    margin: 0;
-    padding: 0;
+    border-top: 1px solid #eee;
+    padding: 0 24px;
 }
 
 .item-menu {
@@ -390,11 +262,6 @@ const busqueda = ref('')
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.item-menu a {
-    color: inherit;
-    text-decoration: none;
 }
 
 .item-menu:hover {
@@ -421,7 +288,7 @@ const busqueda = ref('')
     top: 0;
     left: 0;
     display: flex;
-    transition: transform 0.5s ease-in-out;
+    transition: left 0.5s ease-in-out;
 }
 
 .slide {
@@ -482,7 +349,6 @@ const busqueda = ref('')
     width: 12px;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 9999px;
-    cursor: pointer;
 }
 
 .point.active {
@@ -544,6 +410,7 @@ const busqueda = ref('')
     margin-bottom: 18px;
 }
 
+
 .img-noticia {
     width: 100%;
     aspect-ratio: 4/3;
@@ -577,6 +444,32 @@ const busqueda = ref('')
     color: #4a4a4a;
 }
 
+.noticias-page .contenido-principal {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 30px;
+    padding: 38px 32px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.10);
+}
+
+.noticias-page .sidebar {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 22px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+}
+
+.noticias-page .sidebar h3 {
+    margin-bottom: 18px;
+}
+
+.noticias-page .titulo-seccion {
+    margin-bottom: 26px;
+}
+
+.noticias-page .grid-noticias {
+    gap: 26px;
+}
+
 .texto-noticia {
     font-size: 13.5px;
     color: #333;
@@ -597,13 +490,136 @@ const busqueda = ref('')
     font-size: 14px;
     cursor: pointer;
     border-radius: 3px;
-    text-decoration: none;
-    display: inline-block;
 }
 
 .btn-ver-mas:hover {
     background-color: #0CC200;
-    border-color: #0CC200;
+    border: #0CC200;
+}
+
+.form-quejas {
+    background-color: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 100%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #0CC200;
+    border-radius: 6px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    background-color: #f9fdf9;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #0092FF;
+}
+
+.mensaje-warning,
+.mensaje-success {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    display: none;
+}
+
+.mensaje-warning {
+    background-color: rgba(255, 90, 90, 0.15);
+    color: #800;
+    border: 1px solid rgba(255, 90, 90, 0.45);
+}
+
+.mensaje-success {
+    background-color: rgba(153, 255, 153, 0.25);
+    color: #0a5e0a;
+    border: 1px solid rgba(0, 204, 0, 0.4);
+}
+
+.atencion-usuario {
+    background: url('imagenes/bus1.jpeg') center/cover no-repeat fixed;
+}
+
+.atencion-usuario .banner-fila.noticias-banner {
+    background: rgba(0, 0, 0, 0.38);
+    color: #fff;
+    min-height: 260px;
+    padding: 60px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.atencion-usuario .banner-fila.noticias-banner h1,
+.atencion-usuario .banner-fila.noticias-banner h2 {
+    color: #ffffff;
+}
+
+.noticias-page .banner-fila.noticias-banner h1 {
+    font-size: clamp(2.2rem, 3.5vw, 3.6rem);
+    letter-spacing: 0.08em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    text-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.noticias-page .banner-fila.noticias-banner h2 {
+    font-size: clamp(1.05rem, 1.8vw, 1.55rem);
+    font-weight: 400;
+    max-width: 860px;
+    margin: 0 auto;
+    color: #e8f6ff;
+    text-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.atencion-usuario .contenido-principal {
+    justify-content: center;
+    padding-top: 40px;
+}
+
+.atencion-usuario .form-quejas {
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.atencion-usuario .seccion-noticias {
+    width: 100%;
+    max-width: 760px;
+}
+
+.atencion-usuario .sidebar {
+    width: 100%;
+    max-width: 360px;
 }
 
 .seccion-anuncios {
@@ -690,11 +706,6 @@ const busqueda = ref('')
     flex-direction: column;
     gap: 14px;
 }
-    .footer-marca img {
-    width: 200px;
-    height: auto;
-    display: block;
-}
 
 .footer-logo {
     font-size: 1.6rem;
@@ -732,12 +743,6 @@ const busqueda = ref('')
 }
 
 .footer-columna {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.footer-lista {
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -831,7 +836,6 @@ const busqueda = ref('')
     .footer-columnas {
         gap: 24px;
     }
-
 }
 
 @media (max-width: 768px) {
@@ -857,6 +861,7 @@ const busqueda = ref('')
 
     .navegacion {
         display: none;
+        flex-direction: column;
         width: 100%;
         padding: 0;
         border-top: 1px solid rgba(255,255,255,0.2);
@@ -865,12 +870,6 @@ const busqueda = ref('')
 
     .navegacion.nav-abierta {
         display: flex;
-        flex-direction: column;
-    }
-
-    .navegacion-lista {
-        flex-direction: column;
-        width: 100%;
     }
 
     .acciones-mobile {
@@ -937,7 +936,6 @@ const busqueda = ref('')
     .btn-ver-mas {
         width: 100%;
         padding: 11px;
-        text-align: center;
     }
 
     .footer {
