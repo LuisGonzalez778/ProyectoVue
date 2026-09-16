@@ -27,5 +27,9 @@ git clone
 ```
 npm install
 ```
+### Remote Repository Proyect
+```
+git remote add origin https://github.com/LuisGonzalez778/ProyectoVue
+```
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
