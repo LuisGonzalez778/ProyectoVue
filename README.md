@@ -20,8 +20,9 @@ npm run build
 npm run lint
 ```
 ### Clone Proyect
+```
 git clone 
-
+```
 ### Install Proyect
 ```
 npm install
