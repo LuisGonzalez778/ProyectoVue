@@ -1,7 +1,7 @@
 <template>
     <menu class="menu open-sans">
         <div class="menu-top">
-            <img src="@/assets/logo1.png " alt="Logo">
+            <img src="@/assets/logo1.png" alt="Samaria Bus Route">
             <div class="acciones">
                 <router-link class="btn-registrar" to="/registrar">Registrar</router-link>
                 <router-link class="btn-ingresar" to="/login">Ingresar</router-link>
@@ -27,8 +27,8 @@
                 <li class="item-menu item-menu-underline"><a href>Atencion Usuario</a></li>
             </ul>
             <div class="acciones-mobile">
-                <a class="btn-registrar" href="registrar.html">Registrar</a>
-                <a class="btn-ingresar" href="login.html">Ingresar</a>
+                <router-link class="btn-registrar" to="/registrar">Registrar</router-link>
+                <router-link class="btn-ingresar" to="/login">Ingresar</router-link>
             </div>
         </nav>
     </menu>
@@ -63,25 +63,31 @@
         <div class="columna-izquierda">
             <section class="seccion-noticias">
                 <h2 class="titulo-seccion">Noticias</h2>
-                <div class="grid-noticias">
-                    <div class="noticia">
-                        <img src="@/assets/bus.jpeg" alt="Nueva flota de buses eléctricos" class="img-noticia">
-                        <p class="texto-noticia">
-                            Nueva flota de buses eléctricos llega a la ciudad mejorando la calidad del aire y reduciendo emisiones de CO2 en un 40% durante el primer semestre del año.
-                        </p>
-                    </div>
-                    <div class="noticia">
-                        <img src="@/assets/imagenes/datafono.jpg" alt="Sistema de pago integrado" class="img-noticia">
-                        <p class="texto-noticia">
-                            Sistema de pago integrado facilita el acceso a todos los medios de transporte público con una sola tarjeta ciudadana recargable en toda la ciudad.
-                        </p>
-                    </div>
-                    <div class="noticia">
-                        <img src="@/assets/imagenes/rutabus.jpg" alt="Nuevas rutas intermunicipales" class="img-noticia">
-                        <p class="texto-noticia">
-                            Nuevas rutas intermunicipales reducen tiempos de desplazamiento hasta en un 30% para miles de usuarios diarios que viajan entre municipios.
-                        </p>
-                    </div>
+                <div v-if="cargandoTarjetas" class="grid-noticias" role="status" aria-label="Cargando noticias">
+                    <article v-for="placeholder in noticias" :key="placeholder.titulo" class="noticia noticia-skeleton" aria-hidden="true">
+                        <Skeleton class="skeleton-imagen" height="auto" />
+                        <div class="skeleton-contenido">
+                            <Skeleton width="82%" height="1.4rem" />
+                            <Skeleton width="64%" height="1.4rem" />
+                            <div class="skeleton-lineas">
+                                <Skeleton
+                                    v-for="linea in 6"
+                                    :key="linea"
+                                    :width="linea % 3 === 0 ? '72%' : '100%'"
+                                    height="1rem"
+                                />
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div v-else class="grid-noticias">
+                    <article v-for="noticia in noticias" :key="noticia.titulo" class="noticia">
+                        <img :src="noticia.imagen" :alt="noticia.alt" class="img-noticia">
+                        <div class="noticia-contenido">
+                            <h3>{{ noticia.titulo }}</h3>
+                            <p class="texto-noticia">{{ noticia.texto }}</p>
+                        </div>
+                    </article>
                 </div>
 
                 <div class="cta-noticias">
@@ -93,22 +99,17 @@
             <section class="seccion-anuncios">
                 <h2 class="titulo-seccion">Anuncios</h2>
 
-                <div class="anuncio">
-                    <p>
-                        El Ministerio de Transporte anuncia la implementación de nuevas rutas de transporte masivo para las zonas periféricas de la ciudad. Este proyecto beneficiará a más de 200,000 habitantes que actualmente no cuentan con acceso directo al sistema integrado de transporte. Las obras de infraestructura comenzarán el próximo trimestre con una inversión inicial de $150 mil millones de pesos.
-                    </p>
-                    <p>
-                        Se habilitarán 15 nuevas estaciones distribuidas estratégicamente en los barrios de mayor densidad poblacional. Cada estación contará con zonas de cicloparqueadero, accesibilidad para personas con movilidad reducida y tecnología de información en tiempo real sobre llegadas y capacidad de los vehículos. La ciudadanía podrá participar en las audiencias públicas programadas para los próximos meses y hacer valer su derecho a la participación en la planificación urbana.
-                    </p>
+                <div v-if="cargandoTarjetas" class="anuncios-grid" role="status" aria-label="Cargando anuncios">
+                    <article v-for="anuncio in anuncios" :key="anuncio.titulo" class="anuncio anuncio-skeleton" aria-hidden="true">
+                        <Skeleton width="65%" height="1.4rem" />
+                        <Skeleton v-for="linea in 9" :key="linea" :width="linea % 3 === 0 ? '74%' : '100%'" height="1rem" />
+                    </article>
                 </div>
-
-                <div class="anuncio">
-                    <p>
-                        Actualización del sistema de recaudo: a partir del 1 de abril entrará en vigencia la nueva tarifa integrada que permitirá realizar transbordos gratuitos entre bus, metro y cable durante un período de 90 minutos. Esta medida busca incentivar el uso del transporte público y reducir la congestión vehicular en las horas pico.
-                    </p>
-                    <p>
-                        Los usuarios podrán recargar su tarjeta en cualquiera de los 450 puntos habilitados en toda el área metropolitana, incluyendo supermercados, farmacias y estaciones de servicio. También se habilitará la recarga virtual a través de la aplicación oficial. Para los adultos mayores, personas con discapacidad y estudiantes de estratos 1, 2 y 3, se mantienen los subsidios y descuentos especiales vigentes.
-                    </p>
+                <div v-else class="anuncios-grid">
+                    <article v-for="anuncio in anuncios" :key="anuncio.titulo" class="anuncio">
+                        <h3>{{ anuncio.titulo }}</h3>
+                        <p v-for="parrafo in anuncio.parrafos" :key="parrafo">{{ parrafo }}</p>
+                    </article>
                 </div>
             </section>
 
@@ -123,14 +124,9 @@
                 <p>Reporta inconvenientes y comunícate directamente con los operadores a través del canal oficial de atención ciudadana.</p>
             </div>
 
-            <div class="sidebar-imagen">
-                <img src="imagenes/bank.png" alt="Servicios bancarios" class="img-sidebar">
-            </div>
-            <div class="sidebar-imagen">
-                <img src="@/assets/bus.jpeg" alt="Comunidad" class="img-sidebar">
-            </div>
-            <div class="sidebar-imagen">
-                <img src="imagenes/wallet.jpg" alt="Wallet" class="img-sidebar">
+            <div v-for="imagen in imagenesSidebar" :key="imagen.alt" class="sidebar-imagen">
+                <Skeleton v-if="cargandoTarjetas" class="skeleton-sidebar" aria-hidden="true" />
+                <img v-else :src="imagen.src" :alt="imagen.alt" class="img-sidebar">
             </div>
         </aside>
 
@@ -186,6 +182,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import Skeleton from 'primevue/skeleton'
 
 
 import busImg from '@/assets/bus.jpeg'
@@ -193,6 +190,54 @@ import busElectricoImg from '@/assets/imagenes/buselectrico.jpg'
 import busesImg from '@/assets/imagenes/buses.jpg'
 import busetasImg from '@/assets/imagenes/busetas.jpg'
 import imagesImg from '@/assets/imagenes/images.jpg'
+import datafonoImg from '@/assets/imagenes/datafono.jpg'
+import rutaBusImg from '@/assets/imagenes/rutabus.jpg'
+import bankImg from '@/assets/imagenes/bank.png'
+import walletImg from '@/assets/imagenes/wallet.jpg'
+
+const noticias = [
+    {
+        imagen: busImg,
+        alt: 'Nueva flota de buses eléctricos',
+        titulo: 'Nueva flota de buses eléctricos',
+        texto: 'Nueva flota de buses eléctricos llega a la ciudad mejorando la calidad del aire y reduciendo emisiones de CO2 en un 40% durante el primer semestre del año.'
+    },
+    {
+        imagen: datafonoImg,
+        alt: 'Sistema de pago integrado',
+        titulo: 'Sistema de pago integrado',
+        texto: 'Sistema de pago integrado facilita el acceso a todos los medios de transporte público con una sola tarjeta ciudadana recargable en toda la ciudad.'
+    },
+    {
+        imagen: rutaBusImg,
+        alt: 'Nuevas rutas intermunicipales',
+        titulo: 'Nuevas rutas intermunicipales',
+        texto: 'Nuevas rutas intermunicipales reducen tiempos de desplazamiento hasta en un 30% para miles de usuarios diarios que viajan entre municipios.'
+    }
+]
+
+const anuncios = [
+    {
+        titulo: 'Nuevas rutas de transporte masivo',
+        parrafos: [
+            'El Ministerio de Transporte anuncia la implementación de nuevas rutas de transporte masivo para las zonas periféricas de la ciudad. Este proyecto beneficiará a más de 200,000 habitantes que actualmente no cuentan con acceso directo al sistema integrado de transporte. Las obras de infraestructura comenzarán el próximo trimestre con una inversión inicial de $150 mil millones de pesos.',
+            'Se habilitarán 15 nuevas estaciones distribuidas estratégicamente en los barrios de mayor densidad poblacional. Cada estación contará con zonas de cicloparqueadero, accesibilidad para personas con movilidad reducida y tecnología de información en tiempo real sobre llegadas y capacidad de los vehículos. La ciudadanía podrá participar en las audiencias públicas programadas para los próximos meses y hacer valer su derecho a la participación en la planificación urbana.'
+        ]
+    },
+    {
+        titulo: 'Actualización del sistema de recaudo',
+        parrafos: [
+            'Actualización del sistema de recaudo: a partir del 1 de abril entrará en vigencia la nueva tarifa integrada que permitirá realizar transbordos gratuitos entre bus, metro y cable durante un período de 90 minutos. Esta medida busca incentivar el uso del transporte público y reducir la congestión vehicular en las horas pico.',
+            'Los usuarios podrán recargar su tarjeta en cualquiera de los 450 puntos habilitados en toda el área metropolitana, incluyendo supermercados, farmacias y estaciones de servicio. También se habilitará la recarga virtual a través de la aplicación oficial. Para los adultos mayores, personas con discapacidad y estudiantes de estratos 1, 2 y 3, se mantienen los subsidios y descuentos especiales vigentes.'
+        ]
+    }
+]
+
+const imagenesSidebar = [
+    { src: bankImg, alt: 'Servicios bancarios' },
+    { src: busImg, alt: 'Comunidad' },
+    { src: walletImg, alt: 'Wallet' }
+]
 
 const slides = [
     { src: busImg, alt: 'Slide 1' },
@@ -203,6 +248,7 @@ const slides = [
 ]
 
 const slideActual = ref(0)
+const cargandoTarjetas = ref(true)
 let autoplayId = null
 
 const estiloSlider = computed(() => ({
@@ -229,8 +275,24 @@ function detenerAutoplay() {
     clearInterval(autoplayId)
 }
 
-onMounted(iniciarAutoplay)
+onMounted(() => {
+    iniciarAutoplay()
+    void cargarTarjetas()
+})
 onUnmounted(detenerAutoplay)
+
+async function cargarTarjetas() {
+    await Promise.all([
+        Promise.all([...noticias, ...imagenesSidebar].map(({ imagen, src }) => new Promise((resolve) => {
+            const imagenCargada = new Image()
+            imagenCargada.onload = resolve
+            imagenCargada.onerror = resolve
+            imagenCargada.src = imagen || src
+        }))),
+        new Promise((resolve) => setTimeout(resolve, 900))
+    ])
+    cargandoTarjetas.value = false
+}
 
 const menuAbierto = ref(false)
 
@@ -329,8 +391,9 @@ const busqueda = ref('')
 }
 
 .btn-registrar {
+    min-width: 112px;
+    min-height: 40px;
     padding: 7px 18px;
-    
     border: 1.5px solid #ffffff;
     color: #ffffff;
     font-family: "Open Sans", sans-serif;
@@ -338,7 +401,11 @@ const busqueda = ref('')
     cursor: pointer;
     border-radius: 3px;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    line-height: 1.2;
 }
 
 .btn-registrar:hover {
@@ -348,8 +415,9 @@ const busqueda = ref('')
 }
 
 .btn-ingresar {
+    min-width: 112px;
+    min-height: 40px;
     padding: 7px 18px;
-   
     border: 1.5px solid #ffffff;
     color: #fff;
     font-family: "Open Sans", sans-serif;
@@ -357,7 +425,11 @@ const busqueda = ref('')
     cursor: pointer;
     border-radius: 3px;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    line-height: 1.2;
 }
 
 .btn-ingresar:hover {
@@ -539,17 +611,19 @@ const busqueda = ref('')
 
 .grid-noticias {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    align-items: stretch;
     gap: 20px;
     margin-bottom: 18px;
 }
 
 .img-noticia {
+    display: block;
     width: 100%;
     aspect-ratio: 4/3;
     object-fit: cover;
-    border-radius: 3px;
-    margin-bottom: 10px;
+    margin: 0;
 }
 
 .noticia {
@@ -557,6 +631,9 @@ const busqueda = ref('')
     border-radius: 18px;
     overflow: hidden;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -572,9 +649,58 @@ const busqueda = ref('')
 }
 
 .noticia p {
-    margin: 0 18px 18px;
+    margin: 0;
     font-size: 14px;
     color: #4a4a4a;
+}
+
+.noticia-contenido {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 18px;
+}
+
+.noticia-contenido h3 {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    color: #12436b;
+}
+
+.noticia-contenido p {
+    flex: 1;
+    line-height: 1.55;
+}
+
+.noticia-skeleton {
+    min-height: 100%;
+}
+
+.skeleton-imagen {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4/3;
+    height: auto;
+    flex: 0 0 auto;
+    border-radius: 0;
+}
+
+.skeleton-contenido {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 18px;
+}
+
+.skeleton-lineas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.skeleton-contenido :deep(.p-skeleton) {
+    flex-shrink: 0;
 }
 
 .texto-noticia {
@@ -611,7 +737,33 @@ const busqueda = ref('')
 }
 
 .anuncio {
-    margin-bottom: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    padding: 20px;
+    border: 1px solid #dce7f1;
+    border-radius: 14px;
+    background-color: #ffffff;
+    box-shadow: 0 10px 28px rgba(22, 56, 88, 0.08);
+}
+
+.anuncios-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 20px;
+}
+
+.anuncio h3 {
+    color: #12436b;
+    font-size: 1.05rem;
+    line-height: 1.4;
+}
+
+.anuncio-skeleton {
+    justify-content: flex-start;
+    min-height: 300px;
 }
 
 .anuncio p {
@@ -661,6 +813,12 @@ const busqueda = ref('')
     overflow: hidden;
     border-radius: 3px;
     background-color: #e6ffef;
+}
+
+.skeleton-sidebar {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .img-sidebar {
@@ -816,8 +974,12 @@ const busqueda = ref('')
     }
 
     .grid-noticias {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 16px;
+    }
+
+    .anuncios-grid {
+        grid-template-columns: 1fr;
     }
 
     .footer-contenido {
@@ -914,16 +1076,16 @@ const busqueda = ref('')
     }
 
     .sidebar-imagen {
-        display: none;
-    }
-
-    .sidebar-texto {
-        display: none;
+        max-height: 180px;
     }
 
     .grid-noticias {
         grid-template-columns: 1fr;
         gap: 20px;
+    }
+
+    .anuncios-grid {
+        grid-template-columns: 1fr;
     }
 
     .titulo-seccion {

@@ -1,27 +1,35 @@
 <template>
-<body class="noticias-page">
+<div class="noticias-page">
     <menu class="menu open-sans">
         <div class="menu-top">
             <img src="@/assets/logo1.png" alt="Logo">
             <div class="acciones">
-                <button class="btn-registrar"><router-link to="/registrar">Registrar</router-link></button>
-                <button class="btn-ingresar"><router-link to="/login">Ingresar</router-link></button>
+                <router-link class="btn-registrar" to="/registrar">Registrar</router-link>
+                <router-link class="btn-ingresar" to="/login">Ingresar</router-link>
             </div>
-            <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Abrir menú" aria-expanded="false">
+            <button
+                class="btn-hamburguesa"
+                :class="{ activo: menuAbierto }"
+                :aria-label="menuAbierto ? 'Cerrar menú' : 'Abrir menú'"
+                :aria-expanded="menuAbierto"
+                @click="toggleMenu"
+            >
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
-        <nav class="navegacion" id="navegacion">
-            <li class="item-menu item-menu-underline"><router-link to="/">Inicio</router-link></li>
-            <li class="item-menu item-menu-underline">Que es</li>
-            <li class="item-menu item-menu-underline">Transparencia</li>
-            <li class="item-menu item-menu-underline">Gestion Tecnica</li>
-            <li class="item-menu item-menu-underline"><a href="atencionUsuario.html">Atencion Usuario</a></li>
+        <nav class="navegacion" :class="{ 'nav-abierta': menuAbierto }">
+            <ul class="navegacion-lista">
+                <li class="item-menu item-menu-underline"><router-link to="/">Inicio</router-link></li>
+                <li class="item-menu item-menu-underline">Que es</li>
+                <li class="item-menu item-menu-underline">Transparencia</li>
+                <li class="item-menu item-menu-underline">Gestion Tecnica</li>
+                <li class="item-menu item-menu-underline"><a href="#">Atencion Usuario</a></li>
+            </ul>
             <div class="acciones-mobile">
-                <button class="btn-registrar"><router-link to="/registrar">Registrar</router-link></button>
-                <button class="btn-ingresar"><router-link to="/login">Ingresar</router-link></button>
+                <router-link class="btn-registrar" to="/registrar">Registrar</router-link>
+                <router-link class="btn-ingresar" to="/login">Ingresar</router-link>
             </div>
         </nav>
     </menu>
@@ -34,34 +42,33 @@
     <main class="contenido-principal open-sans">
         <section class="seccion-noticias">
             <h2 class="titulo-seccion">Últimas noticias</h2>
-            <div class="grid-noticias">
-                <article class="noticia">
-                    <!-- HACERLE V-FOR A ESTAS IMAGENES -->
-                    <img src="imagenes/bus1.jpeg" alt="Buses eléctricos" class="img-noticia">
-                    <h3>Inauguración de la nueva línea eléctrica urbana</h3>
-                    <p class="texto-noticia">El sistema de transporte presentó hoy la nueva línea de buses eléctricos que cubrirá 12 rutas principales de la ciudad, reduciendo las emisiones de CO2 en un 45% y mejorando la frecuencia en horas pico.</p>
+            <div class="grid-noticias" :class="{ 'noticias-cargando': cargandoNoticias }" :aria-busy="cargandoNoticias">
+                <article v-for="noticia in noticias" :key="noticia.titulo" class="noticia">
+                    <div class="noticia-imagen">
+                        <Skeleton v-if="cargandoNoticias" class="skeleton-imagen" width="100%" height="100%" aria-hidden="true" />
+                        <img v-else :src="noticia.imagen" :alt="noticia.alt" class="img-noticia">
+                    </div>
+                    <div class="noticia-contenido">
+                        <div v-if="cargandoNoticias" class="skeleton-contenido" aria-hidden="true">
+                            <div class="skeleton-titulo">
+                                <Skeleton width="100%" height="1.4rem" />
+                                <Skeleton width="72%" height="1.4rem" />
+                            </div>
+                            <div class="skeleton-lineas">
+                                <Skeleton
+                                    v-for="linea in 8"
+                                    :key="linea"
+                                    :width="linea % 4 === 0 ? '68%' : linea % 3 === 0 ? '82%' : '100%'"
+                                    height="1rem"
+                                />
+                            </div>
+                        </div>
+                        <template v-else>
+                            <h3>{{ noticia.titulo }}</h3>
+                            <p class="texto-noticia">{{ noticia.texto }}</p>
+                        </template>
+                    </div>
                 </article>
-                <article class="noticia">
-                    <img src="imagenes/buselectrico.jpg" alt="Bus eléctrico" class="img-noticia">
-                    <h3>Tarifa integrada beneficiará a estudiantes y adultos mayores</h3>
-                    <p class="texto-noticia">A partir del próximo mes, el plan de tarifa integrada permitirá transbordos gratuitos entre buses, metro y teleférico durante 90 minutos para pasajeros con carnés estudiantiles y de tercera edad.</p>
-                </article>
-                <article class="noticia">
-                    <img src="imagenes/buses.jpg" alt="Nuevas estaciones" class="img-noticia">
-                    <h3>15 nuevas estaciones con accesibilidad total</h3>
-                    <p class="texto-noticia">Las nuevas estaciones incluyen ascensores, rampas, señalización táctil para personas con discapacidad visual y zonas de cicloparqueadero, optimizando el acceso para todos los ciudadanos.</p>
-                </article>
-                <article class="noticia">
-                    <img src="imagenes/busetas.jpg" alt="Control digital" class="img-noticia">
-                    <h3>Centro de control digital en tiempo real</h3>
-                    <p class="texto-noticia">Se abrió un nuevo centro de monitoreo que permite a los operadores gestionar la flota en tiempo real, reducir retrasos y alertar sobre cambios en el servicio durante contingencias climatológicas.</p>
-                </article>
-                <article class="noticia">
-                    <img src="imagenes/troll.png" alt="Movilidad sostenible" class="img-noticia">
-                    <h3>Campaña ciudadana por una movilidad sostenible</h3>
-                    <p class="texto-noticia">El programa "Movilidad Responsable" invita a los usuarios a participar en jornadas de educación vial, reducir el uso de autos particulares y aprovechar el transporte público integrado.</p>
-                </article>
-                <!-- HACERLE V-FOR A ESTAS IMAGENES -->
             </div>
         </section>
 
@@ -69,14 +76,14 @@
             <h3>Área de consulta</h3>
             <p>Descarga la app oficial para ver rutas, horarios y alertas en tiempo real.</p>
             <p>Participa en las audiencias públicas y consulta tus derechos como usuario del sistema.</p>
-            <img src="img/trabajo.png" alt="Transporte" class="img-sidebar">
+            <img src="@/assets/logo1.png" alt="Transporte" class="img-sidebar">
         </aside>
     </main>
 
     <footer class="footer open-sans">
         <div class="footer-contenido">
             <div class="footer-marca">
-                <h2 class="footer-logo">Logo</h2>
+                <img src="@/assets/logo1.png" alt="Samaria Bus Route" class="footer-logo">
                 <div class="footer-direccion">
                     <p><strong>Address:</strong></p>
                     <p>123 Main Street, City</p>
@@ -113,16 +120,72 @@
             </div>
         </div>
     </footer>
-</body>
+</div>
 </template>
 
-<script>
-export default {
+<script setup>
+import { onMounted, ref } from 'vue'
+import Skeleton from 'primevue/skeleton'
+import bus1Img from '@/assets/imagenes/bus1.jpeg'
+import busElectricoImg from '@/assets/imagenes/buselectrico.jpg'
+import busesImg from '@/assets/imagenes/buses.jpg'
+import busetasImg from '@/assets/imagenes/busetas.jpg'
+import trollImg from '@/assets/imagenes/troll.png'
 
+const menuAbierto = ref(false)
+const cargandoNoticias = ref(true)
+const noticias = [
+    {
+        imagen: bus1Img,
+        alt: 'Buses eléctricos',
+        titulo: 'Inauguración de la nueva línea eléctrica urbana',
+        texto: 'El sistema de transporte presentó hoy la nueva línea de buses eléctricos que cubrirá 12 rutas principales de la ciudad, reduciendo las emisiones de CO2 en un 45% y mejorando la frecuencia en horas pico.'
+    },
+    {
+        imagen: busElectricoImg,
+        alt: 'Bus eléctrico',
+        titulo: 'Tarifa integrada beneficiará a estudiantes y adultos mayores',
+        texto: 'A partir del próximo mes, el plan de tarifa integrada permitirá transbordos gratuitos entre buses, metro y teleférico durante 90 minutos para pasajeros con carnés estudiantiles y de tercera edad.'
+    },
+    {
+        imagen: busesImg,
+        alt: 'Nuevas estaciones',
+        titulo: '15 nuevas estaciones con accesibilidad total',
+        texto: 'Las nuevas estaciones incluyen ascensores, rampas, señalización táctil para personas con discapacidad visual y zonas de cicloparqueadero, optimizando el acceso para todos los ciudadanos.'
+    },
+    {
+        imagen: busetasImg,
+        alt: 'Control digital',
+        titulo: 'Centro de control digital en tiempo real',
+        texto: 'Se abrió un nuevo centro de monitoreo que permite a los operadores gestionar la flota en tiempo real, reducir retrasos y alertar sobre cambios en el servicio durante contingencias climatológicas.'
+    },
+    {
+        imagen: trollImg,
+        alt: 'Movilidad sostenible',
+        titulo: 'Campaña ciudadana por una movilidad sostenible',
+        texto: 'El programa "Movilidad Responsable" invita a los usuarios a participar en jornadas de educación vial, reducir el uso de autos particulares y aprovechar el transporte público integrado.'
+    }
+]
+
+onMounted(async () => {
+    await Promise.all([
+        Promise.all(noticias.map(({ imagen }) => new Promise((resolve) => {
+            const imagenCargada = new Image()
+            imagenCargada.onload = resolve
+            imagenCargada.onerror = resolve
+            imagenCargada.src = imagen
+        }))),
+        new Promise((resolve) => setTimeout(resolve, 900))
+    ])
+    cargandoNoticias.value = false
+})
+
+function toggleMenu() {
+    menuAbierto.value = !menuAbierto.value
 }
 </script>
 
-<style>
+<style scoped>
 *{
     padding: 0;
     margin: 0;
@@ -160,6 +223,10 @@ export default {
     margin: 10px 24px 10px 24px;
 }
 
+.menu-top > img {
+    object-fit: contain;
+}
+
 .acciones {
     position: absolute;
     top: 50%;
@@ -168,6 +235,21 @@ export default {
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+.acciones .btn-registrar,
+.acciones .btn-ingresar,
+.acciones-mobile .btn-registrar,
+.acciones-mobile .btn-ingresar {
+    min-width: 112px;
+    min-height: 40px;
+    padding: 7px 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    line-height: 1.2;
+    text-decoration: none;
 }
 
 .acciones-mobile {
@@ -211,7 +293,7 @@ export default {
 
 .btn-registrar {
     padding: 7px 18px;
-    background: #ffffff;
+    background: transparent;
     border: 1.5px solid #ffffff;
     color: #ffffff;
     font-family: "Open Sans", sans-serif;
@@ -222,13 +304,13 @@ export default {
 
 .btn-registrar:hover {
     background-color: #0CC200;
-    border: #0CC200;
+    border-color: #0CC200;
     color: #fff;
 }
 
 .btn-ingresar {
     padding: 7px 18px;
-    background: #ffffff;
+    background: transparent;
     border: 1.5px solid #ffffff;
     color: #fff;
     font-family: "Open Sans", sans-serif;
@@ -239,7 +321,13 @@ export default {
 
 .btn-ingresar:hover {
     background-color: #0CC200;
-    border: #0CC200;
+    border-color: #0CC200;
+}
+
+.noticias-page {
+    min-height: 100vh;
+    background-color: #f1f6fb;
+    color: #243447;
 }
 
 .navegacion {
@@ -251,6 +339,15 @@ export default {
     gap: 0;
     border-top: 1px solid #eee;
     padding: 0 24px;
+}
+
+.navegacion-lista {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .item-menu {
@@ -390,6 +487,9 @@ export default {
 }
 
 .seccion-noticias {
+    flex: 1 1 0%;
+    min-width: 0;
+    width: 100%;
     margin-bottom: 36px;
 }
 
@@ -405,54 +505,95 @@ export default {
 
 .grid-noticias {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(420px, 1fr);
+    align-items: stretch;
     gap: 20px;
     margin-bottom: 18px;
+    width: 100%;
 }
 
 
 .img-noticia {
+    display: block;
     width: 100%;
-    aspect-ratio: 4/3;
+    height: 100%;
     object-fit: cover;
-    border-radius: 3px;
-    margin-bottom: 10px;
 }
 
 .noticia {
     background-color: #ffffff;
-    border-radius: 18px;
+    border: 1px solid #dce7f1;
+    border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 28px rgba(22, 56, 88, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+    min-height: 420px;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.noticia-imagen {
+    width: 100%;
+    height: 190px;
+    flex: 0 0 190px;
+    overflow: hidden;
+}
+
+.noticia-imagen :deep(.p-skeleton),
+.noticia-imagen .img-noticia {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.noticia-imagen :deep(.p-skeleton) {
+    border-radius: 0;
 }
 
 .noticia:hover {
     transform: translateY(-4px);
-    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 18px 38px rgba(22, 56, 88, 0.16);
 }
 
 .noticia h3 {
-    margin: 18px;
+    margin: 0 0 12px;
     font-size: 1.05rem;
-    color: #111;
+    color: #12436b;
 }
 
 .noticia p {
-    margin: 0 18px 18px;
+    margin: 0;
     font-size: 14px;
-    color: #4a4a4a;
+    color: #425466;
+    flex: 1;
+}
+
+.noticia-contenido {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 18px;
+}
+
+.noticia-contenido h3 {
+    min-height: 2.8em;
+    line-height: 1.4;
 }
 
 .noticias-page .contenido-principal {
-    background: rgba(255, 255, 255, 0.95);
+    background: #ffffff;
     border-radius: 30px;
     padding: 38px 32px;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.10);
 }
 
 .noticias-page .sidebar {
-    background: #ffffff;
+    background: #f7fafe;
     padding: 24px;
     border-radius: 22px;
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
@@ -463,11 +604,60 @@ export default {
 }
 
 .noticias-page .titulo-seccion {
+    color: #12436b;
     margin-bottom: 26px;
 }
 
 .noticias-page .grid-noticias {
     gap: 26px;
+}
+
+.noticias-page .banner-fila.noticias-banner {
+    min-height: 260px;
+    padding: 48px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient(130deg, #073b66, #0879b9 60%, #18a6ba);
+}
+
+.noticias-page .img-noticia {
+    display: block;
+    height: 190px;
+    aspect-ratio: auto;
+    margin: 0;
+    border-radius: 0;
+}
+
+.skeleton-contenido {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.skeleton-titulo {
+    min-height: calc(2.8em + 6px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.skeleton-lineas {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.skeleton-contenido :deep(.p-skeleton) {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .texto-noticia {
@@ -563,7 +753,7 @@ export default {
 }
 
 .atencion-usuario {
-    background: url('imagenes/bus1.jpeg') center/cover no-repeat fixed;
+    background: url('../assets/imagenes/bus1.jpeg') center/cover no-repeat fixed;
 }
 
 .atencion-usuario .banner-fila.noticias-banner {
@@ -708,9 +898,11 @@ export default {
 }
 
 .footer-logo {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #000000;
+    display: block;
+    width: 180px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
 }
 
 .footer-direccion {
@@ -821,7 +1013,7 @@ export default {
     }
 
     .grid-noticias {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 16px;
     }
 
@@ -870,6 +1062,22 @@ export default {
 
     .navegacion.nav-abierta {
         display: flex;
+        align-items: stretch;
+    }
+
+    .navegacion-lista {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .navegacion-lista {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        list-style: none;
+        margin: 0;
+        padding: 0;
     }
 
     .acciones-mobile {
@@ -907,6 +1115,10 @@ export default {
         gap: 20px;
     }
 
+    .noticias-page .contenido-principal {
+        padding: 28px 16px;
+    }
+
     .sidebar {
         width: 100%;
         order: -1;
@@ -922,7 +1134,26 @@ export default {
 
     .grid-noticias {
         grid-template-columns: 1fr;
+        grid-auto-rows: minmax(460px, auto);
         gap: 20px;
+    }
+
+    .noticia {
+        min-height: 460px;
+    }
+
+    .noticias-page .banner-fila.noticias-banner {
+        min-height: 220px;
+        padding: 36px 18px;
+    }
+
+    .noticias-page .img-noticia {
+        height: 220px;
+    }
+
+    .noticia-imagen {
+        height: 220px;
+        flex-basis: 220px;
     }
 
     .titulo-seccion {

@@ -10,7 +10,7 @@
 
             <div class="contenedor-form">
                 <div class="logo-form">
-                    <img src=@/assets/logo1.png  alt="Logo" class="img-logo-form">
+                    <img src="@/assets/logo1.png" alt="Logo" class="img-logo-form">
                 </div>
                 <h2 class="titulo-form">Registrar Usuario</h2>
 
@@ -58,6 +58,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import api from '@/services/api'
 
 const router = useRouter()
 
@@ -69,6 +70,26 @@ const acepto = ref(false)
 
 const mensajeWarning = ref('')
 const mensajeSuccess = ref('')
+
+function tieneMayuscula(texto) {
+    for (let i = 0; i < texto.length; i++) {
+        const letra = texto[i]
+        if (letra !== letra.toLowerCase()) {
+            return true
+        }
+    }
+    return false
+}
+
+function tieneNumeroOEspecial(texto) {
+    for (let i = 0; i < texto.length; i++) {
+        const caracter = texto[i]
+        if (caracter === caracter.toLowerCase() && caracter === caracter.toUpperCase()) {
+            return true
+        }
+    }
+    return false
+}
 
 const registrar = () => {
     mensajeWarning.value = ''
@@ -98,20 +119,40 @@ const registrar = () => {
         mensajeWarning.value = "Las contraseñas no coinciden"
         return
     }
+    if (contrasena.value.length < 8) {
+        mensajeWarning.value = "La contraseña debe tener mínimo 8 caracteres"
+        return
+    }
+    if (!tieneMayuscula(contrasena.value)) {
+        mensajeWarning.value = "La contraseña debe tener al menos una letra mayúscula"
+        return
+    }
+    if (!tieneNumeroOEspecial(contrasena.value)) {
+        mensajeWarning.value = "La contraseña debe tener al menos un número o carácter especial"
+        return
+    }
 
-  
-    localStorage.setItem('usuarioRegistrado', correo.value.trim())
-    localStorage.setItem('nombreRegistrado', nombre.value.trim())
-    localStorage.setItem('contraRegistrada', contrasena.value)
-
-    mensajeSuccess.value = `Señor/a ${nombre.value}, ha sido registrado/a correctamente`
-    
-    console.log("REGISTRO EXITOSO - Guardado en LocalStorage:", correo.value.trim())
-    alert("REGISTRO EXITOSO!!!!")
-
-    setTimeout(() => {
-        router.push('/login')
-    }, 1200)
+    api.get('/usuarios', { params: { correo: correo.value.trim() } })
+        .then(respuesta => {
+            if (respuesta.data.length > 0) {
+                mensajeWarning.value = "Ya existe una cuenta con ese correo"
+                return
+            }
+            return api.post('/usuarios', {
+                correo: correo.value.trim(),
+                nombre: nombre.value.trim(),
+                contrasena: contrasena.value
+            }).then(() => {
+                mensajeSuccess.value = `Señor/a ${nombre.value}, ha sido registrado/a correctamente`
+                alert("REGISTRO EXITOSO!!!!")
+                setTimeout(() => {
+                    router.push('/login')
+                }, 1200)
+            })
+        })
+        .catch(() => {
+            mensajeWarning.value = "No se pudo conectar con el servidor"
+        })
 }
 </script>
 <style scoped>
