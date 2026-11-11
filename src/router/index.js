@@ -7,23 +7,25 @@ import PrincipalView from '@/Views/PrincipalView.vue'
 import NoticiasView from '@/Views/NoticiasView.vue'
 
 const routes = [
-
-   {
+  {
+    path: '/',
+    name: 'principal',
+    component: PrincipalView
+  },
+  {
+    path: '/principal',
+    name: 'principal-alt',
+    component: PrincipalView
+  },
+  {
     path: '/login',
     name: 'login',
-   component: LoginView
+    component: LoginView
   },
   {
-     path: '/registrar',
+    path: '/registrar',
     name: 'registrar',
-   component: RegistroView
-
-  },
-  {
-       path: '/',
-    name: 'principal',
-   component: PrincipalView
-
+    component: RegistroView
   },
   {
     path: '/noticias',

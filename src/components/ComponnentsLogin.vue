@@ -12,27 +12,40 @@
                 <router-link to="/registrar" class="link-registrate">Regístrate</router-link>
             </div>
 
-            <div class="contenedor-form">
+            <form class="contenedor-form" @submit.prevent="login">
                 <div class="logo-form">
-                    <img src=@/assets/logo1.png alt="Logo" class="img-logo-form">
+                    <img src="@/assets/logo1.png" alt="Logo" class="img-logo-form">
                 </div>
                 <h2 class="campo">Ingresar Usuario</h2>
 
-                <div class="campo">
-                    <label class="etiqueta">Usuario o correo:</label>
-                    <input type="text" v-model="usuario" class="input-campo">
-                </div>
+                <template v-if="cargando">
+                    <div class="campo" aria-hidden="true">
+                        <Skeleton width="42%" height="1rem" class="skeleton-etiqueta" />
+                        <Skeleton width="100%" height="44px" />
+                    </div>
+                    <div class="campo" aria-hidden="true">
+                        <Skeleton width="35%" height="1rem" class="skeleton-etiqueta" />
+                        <Skeleton width="100%" height="44px" />
+                    </div>
+                    <Skeleton width="100%" height="48px" role="status" aria-label="Validando acceso" />
+                </template>
+                <template v-else>
+                    <div class="campo">
+                        <label class="etiqueta" for="usuario">Usuario o correo:</label>
+                        <input id="usuario" v-model="usuario" type="text" class="input-campo" autocomplete="username">
+                    </div>
 
-                <div class="campo">
-                    <label class="etiqueta">Contraseña:</label>
-                    <input type="password" v-model="password" class="input-campo">
-                </div>
+                    <div class="campo">
+                        <label class="etiqueta" for="password">Contraseña:</label>
+                        <input id="password" v-model="password" type="password" class="input-campo" autocomplete="current-password">
+                    </div>
 
-                <button class="btn-ingresar" @click.prevent="login">Ingresar</button>
+                    <button class="btn-ingresar" type="submit">Ingresar</button>
+                </template>
 
-                <div v-if="mensajeWarning" class="warning" style="display: block;">{{ mensajeWarning }}</div>
-                <div v-if="mensajeSuccess" class="success" style="display: block;">{{ mensajeSuccess }}</div>
-            </div>
+                <div v-if="mensajeWarning" class="warning" role="alert">{{ mensajeWarning }}</div>
+                <div v-if="mensajeSuccess" class="success" role="status">{{ mensajeSuccess }}</div>
+            </form>
         </div>
     </div>
 </template>
@@ -40,6 +53,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Skeleton from 'primevue/skeleton'
+import api from '@/services/api'
 
 const router = useRouter()
 
@@ -47,12 +62,12 @@ const usuario = ref('')
 const password = ref('')
 const mensajeWarning = ref('')
 const mensajeSuccess = ref('')
+const cargando = ref(false)
 
-const login = () => {
-
+async function login() {
+    if (cargando.value) return
     mensajeWarning.value = ''
     mensajeSuccess.value = ''
-
 
     if (usuario.value.trim() === '') {
         mensajeWarning.value = "Por favor digite un usuario o correo"
@@ -63,29 +78,28 @@ const login = () => {
         return
     }
 
-
-    const usuarioGuardado = localStorage.getItem('usuarioRegistrado')
-    const passGuardada = localStorage.getItem('contraRegistrada')
-
-    if (usuarioGuardado && (usuario.value.trim() === usuarioGuardado) && (password.value === passGuardada)) {
+    cargando.value = true
+    try {
+        const respuesta = await api.post('/login', {
+            usuario: usuario.value.trim(),
+            contrasena: password.value
+        })
+        sessionStorage.setItem('usuarioAutenticado', JSON.stringify(respuesta.data.usuario))
         mensajeSuccess.value = "¡Ingreso exitoso!"
-        setTimeout(() => {
-            router.push('/principal')
-        }, 1000)
-    } else {
-        mensajeWarning.value = "Usuario o contraseña incorrectos"
+        await router.push('/')
+    } catch (error) {
+        if (error.response?.status === 401) {
+            mensajeWarning.value = "Usuario o contraseña incorrectos"
+        } else {
+            mensajeWarning.value = "No se pudo conectar con el servidor. Verifique que la API esté encendida."
+        }
+    } finally {
+        cargando.value = false
     }
 }
 </script>
 
-
-<script>
-export default {
-
-}
-</script>
-
-<style>
+<style scoped>
 *{
     padding: 0;
     margin: 0;
@@ -329,6 +343,10 @@ export default {
 .logo-form {
     text-align: center;
     margin-bottom: 18px;
+}
+
+.skeleton-etiqueta {
+    margin-bottom: 6px;
 }
 
 .img-logo-form {
