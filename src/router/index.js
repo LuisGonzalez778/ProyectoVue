@@ -8,6 +8,7 @@ import NoticiasView from '@/Views/NoticiasView.vue'
 import GestionTecnicaView from '@/Views/GestionTecnicaView.vue'
 import QueEsView from '@/Views/QueEsView.vue'
 import TransparenciaView from '@/Views/TransparenciaView.vue'
+import AtencionClienteView from '@/Views/AtencionClienteView.vue'
 
 const routes = [
   {
@@ -50,6 +51,11 @@ const routes = [
     path: '/transparencia',
     name: 'Transparencia',
     component: TransparenciaView
+  },
+  {
+    path: '/atencion-cliente',
+    name: 'AtencionCliente',
+    component: AtencionClienteView
   }
 ]
 
