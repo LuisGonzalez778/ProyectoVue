@@ -10,7 +10,7 @@
 
             <div class="contenedor-form">
                 <div class="logo-form">
-                    <img src="@/assets/logo1.png" alt="Logo" class="img-logo-form">
+                    <img :src="logo" alt="Logo" class="img-logo-form">
                 </div>
                 <h2 class="titulo-form">Registrar Usuario</h2>
 
@@ -56,11 +56,13 @@
 </template>
 
 <script setup>
+import { urlImagen } from '@/services/imagenes'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/services/api'
 
 const router = useRouter()
+const logo = urlImagen('logos', 'logo1.png')
 
 const correo = ref('')
 const nombre = ref('')
@@ -132,26 +134,24 @@ const registrar = () => {
         return
     }
 
-    api.get('/usuarios', { params: { correo: correo.value.trim() } })
-        .then(respuesta => {
-            if (respuesta.data.length > 0) {
-                mensajeWarning.value = "Ya existe una cuenta con ese correo"
-                return
-            }
-            return api.post('/usuarios', {
-                correo: correo.value.trim(),
-                nombre: nombre.value.trim(),
-                contrasena: contrasena.value
-            }).then(() => {
-                mensajeSuccess.value = `Señor/a ${nombre.value}, ha sido registrado/a correctamente`
-                alert("REGISTRO EXITOSO!!!!")
-                setTimeout(() => {
-                    router.push('/login')
-                }, 1200)
-            })
+    api.post('/usuarios', {
+        correo: correo.value.trim(),
+        nombre: nombre.value.trim(),
+        contrasena: contrasena.value
+    })
+        .then(() => {
+            mensajeSuccess.value = `Señor/a ${nombre.value}, ha sido registrado/a correctamente`
+            alert("REGISTRO EXITOSO!!!!")
+            setTimeout(() => {
+                router.push('/login')
+            }, 1200)
         })
-        .catch(() => {
-            mensajeWarning.value = "No se pudo conectar con el servidor"
+        .catch((error) => {
+            if (error.response?.status === 409) {
+                mensajeWarning.value = "Ya existe una cuenta con ese correo"
+            } else {
+                mensajeWarning.value = "No se pudo conectar con el servidor"
+            }
         })
 }
 </script>

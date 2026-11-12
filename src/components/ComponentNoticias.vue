@@ -2,7 +2,7 @@
 <div class="noticias-page">
     <menu class="menu open-sans">
         <div class="menu-top">
-            <img src="@/assets/logo1.png" alt="Logo">
+            <img :src="logo" alt="Logo">
             <div class="acciones">
                 <router-link class="btn-registrar" to="/registrar">Registrar</router-link>
                 <router-link class="btn-ingresar" to="/login">Ingresar</router-link>
@@ -22,9 +22,9 @@
         <nav class="navegacion" :class="{ 'nav-abierta': menuAbierto }">
             <ul class="navegacion-lista">
                 <li class="item-menu item-menu-underline"><router-link to="/">Inicio</router-link></li>
-                <li class="item-menu item-menu-underline">Que es</li>
-                <li class="item-menu item-menu-underline">Transparencia</li>
-                <li class="item-menu item-menu-underline">Gestion Tecnica</li>
+                <li class="item-menu item-menu-underline"><router-link to="/que-es">Que es</router-link></li>
+                <li class="item-menu item-menu-underline"><router-link to="/transparencia">Transparencia</router-link></li>
+                <li class="item-menu item-menu-underline"><router-link to="/gestion-tecnica">Gestion Tecnica</router-link></li>
                 <li class="item-menu item-menu-underline"><a href="#">Atencion Usuario</a></li>
             </ul>
             <div class="acciones-mobile">
@@ -76,14 +76,14 @@
             <h3>Área de consulta</h3>
             <p>Descarga la app oficial para ver rutas, horarios y alertas en tiempo real.</p>
             <p>Participa en las audiencias públicas y consulta tus derechos como usuario del sistema.</p>
-            <img src="@/assets/logo1.png" alt="Transporte" class="img-sidebar">
+            <img :src="logo" alt="Transporte" class="img-sidebar">
         </aside>
     </main>
 
     <footer class="footer open-sans">
         <div class="footer-contenido">
             <div class="footer-marca">
-                <img src="@/assets/logo1.png" alt="Samaria Bus Route" class="footer-logo">
+                <img :src="logo" alt="Samaria Bus Route" class="footer-logo">
                 <div class="footer-direccion">
                     <p><strong>Address:</strong></p>
                     <p>123 Main Street, City</p>
@@ -126,41 +126,39 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import Skeleton from 'primevue/skeleton'
-import bus1Img from '@/assets/imagenes/bus1.jpeg'
-import busElectricoImg from '@/assets/imagenes/buselectrico.jpg'
-import busesImg from '@/assets/imagenes/buses.jpg'
-import busetasImg from '@/assets/imagenes/busetas.jpg'
-import trollImg from '@/assets/imagenes/troll.png'
+import { urlImagen } from '@/services/imagenes'
 
 const menuAbierto = ref(false)
+const logo = urlImagen('logos', 'logo1.png')
+const fondoAtencion = `url("${urlImagen('fondos', 'bus1.jpeg')}")`
 const cargandoNoticias = ref(true)
 const noticias = [
     {
-        imagen: bus1Img,
+        imagen: urlImagen('noticias', 'bus1.jpeg'),
         alt: 'Buses eléctricos',
         titulo: 'Inauguración de la nueva línea eléctrica urbana',
         texto: 'El sistema de transporte presentó hoy la nueva línea de buses eléctricos que cubrirá 12 rutas principales de la ciudad, reduciendo las emisiones de CO2 en un 45% y mejorando la frecuencia en horas pico.'
     },
     {
-        imagen: busElectricoImg,
+        imagen: urlImagen('noticias', 'buselectrico.jpg'),
         alt: 'Bus eléctrico',
         titulo: 'Tarifa integrada beneficiará a estudiantes y adultos mayores',
         texto: 'A partir del próximo mes, el plan de tarifa integrada permitirá transbordos gratuitos entre buses, metro y teleférico durante 90 minutos para pasajeros con carnés estudiantiles y de tercera edad.'
     },
     {
-        imagen: busesImg,
+        imagen: urlImagen('noticias', 'buses.jpg'),
         alt: 'Nuevas estaciones',
         titulo: '15 nuevas estaciones con accesibilidad total',
         texto: 'Las nuevas estaciones incluyen ascensores, rampas, señalización táctil para personas con discapacidad visual y zonas de cicloparqueadero, optimizando el acceso para todos los ciudadanos.'
     },
     {
-        imagen: busetasImg,
+        imagen: urlImagen('noticias', 'busetas.jpg'),
         alt: 'Control digital',
         titulo: 'Centro de control digital en tiempo real',
         texto: 'Se abrió un nuevo centro de monitoreo que permite a los operadores gestionar la flota en tiempo real, reducir retrasos y alertar sobre cambios en el servicio durante contingencias climatológicas.'
     },
     {
-        imagen: trollImg,
+        imagen: urlImagen('noticias', 'troll.png'),
         alt: 'Movilidad sostenible',
         titulo: 'Campaña ciudadana por una movilidad sostenible',
         texto: 'El programa "Movilidad Responsable" invita a los usuarios a participar en jornadas de educación vial, reducir el uso de autos particulares y aprovechar el transporte público integrado.'
@@ -753,7 +751,7 @@ function toggleMenu() {
 }
 
 .atencion-usuario {
-    background: url('../assets/imagenes/bus1.jpeg') center/cover no-repeat fixed;
+    background: v-bind(fondoAtencion) center/cover no-repeat fixed;
 }
 
 .atencion-usuario .banner-fila.noticias-banner {

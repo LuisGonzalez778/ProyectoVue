@@ -14,7 +14,7 @@
 
             <form class="contenedor-form" @submit.prevent="login">
                 <div class="logo-form">
-                    <img src="@/assets/logo1.png" alt="Logo" class="img-logo-form">
+                    <img :src="logo" alt="Logo" class="img-logo-form">
                 </div>
                 <h2 class="campo">Ingresar Usuario</h2>
 
@@ -51,12 +51,15 @@
 </template>
 
 <script setup>
+import { urlImagen } from '@/services/imagenes'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Skeleton from 'primevue/skeleton'
 import api from '@/services/api'
+import { guardarSesion } from '@/services/auth'
 
 const router = useRouter()
+const logo = urlImagen('logos', 'logo1.png')
 
 const usuario = ref('')
 const password = ref('')
@@ -84,7 +87,7 @@ async function login() {
             usuario: usuario.value.trim(),
             contrasena: password.value
         })
-        sessionStorage.setItem('usuarioAutenticado', JSON.stringify(respuesta.data.usuario))
+        guardarSesion(respuesta.data.token, respuesta.data.usuario)
         mensajeSuccess.value = "¡Ingreso exitoso!"
         await router.push('/')
     } catch (error) {

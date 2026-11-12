@@ -1,7 +1,7 @@
 <template>
     <menu class="menu open-sans">
         <div class="menu-top">
-            <img src="@/assets/logo1.png" alt="Samaria Bus Route">
+            <img :src="logo" alt="Samaria Bus Route">
             <div class="acciones">
                 <router-link class="btn-registrar" to="/registrar">Registrar</router-link>
                 <router-link class="btn-ingresar" to="/login">Ingresar</router-link>
@@ -24,7 +24,7 @@
                 <li class="item-menu item-menu-underline"><router-link to="/que-es">Que es</router-link></li>
                 <li class="item-menu item-menu-underline"><router-link to="/transparencia">Transparencia</router-link></li>
                 <li class="item-menu item-menu-underline"><router-link to="/gestion-tecnica">Gestion Tecnica</router-link></li>
-                <li class="item-menu item-menu-underline"><router-link to="/atencion-cliente">Atencion Cliente</router-link></li>
+                <li class="item-menu item-menu-underline"><a href>Atencion Usuario</a></li>
             </ul>
             <div class="acciones-mobile">
                 <router-link class="btn-registrar" to="/registrar">Registrar</router-link>
@@ -183,33 +183,25 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import Skeleton from 'primevue/skeleton'
+import { obtenerImagenes, urlImagen } from '@/services/imagenes'
 
 
-import busImg from '@/assets/bus.jpeg'
-import busElectricoImg from '@/assets/imagenes/buselectrico.jpg'
-import busesImg from '@/assets/imagenes/buses.jpg'
-import busetasImg from '@/assets/imagenes/busetas.jpg'
-import imagesImg from '@/assets/imagenes/images.jpg'
-import datafonoImg from '@/assets/imagenes/datafono.jpg'
-import rutaBusImg from '@/assets/imagenes/rutabus.jpg'
-import bankImg from '@/assets/imagenes/bank.png'
-import walletImg from '@/assets/imagenes/wallet.jpg'
 
 const noticias = [
     {
-        imagen: busImg,
+        imagen: urlImagen('inicio', 'bus.jpeg'),
         alt: 'Nueva flota de buses eléctricos',
         titulo: 'Nueva flota de buses eléctricos',
         texto: 'Nueva flota de buses eléctricos llega a la ciudad mejorando la calidad del aire y reduciendo emisiones de CO2 en un 40% durante el primer semestre del año.'
     },
     {
-        imagen: datafonoImg,
+        imagen: urlImagen('inicio', 'datafono.jpg'),
         alt: 'Sistema de pago integrado',
         titulo: 'Sistema de pago integrado',
         texto: 'Sistema de pago integrado facilita el acceso a todos los medios de transporte público con una sola tarjeta ciudadana recargable en toda la ciudad.'
     },
     {
-        imagen: rutaBusImg,
+        imagen: urlImagen('inicio', 'rutabus.jpg'),
         alt: 'Nuevas rutas intermunicipales',
         titulo: 'Nuevas rutas intermunicipales',
         texto: 'Nuevas rutas intermunicipales reducen tiempos de desplazamiento hasta en un 30% para miles de usuarios diarios que viajan entre municipios.'
@@ -233,19 +225,10 @@ const anuncios = [
     }
 ]
 
-const imagenesSidebar = [
-    { src: bankImg, alt: 'Servicios bancarios' },
-    { src: busImg, alt: 'Comunidad' },
-    { src: walletImg, alt: 'Wallet' }
-]
+// Se llenan con las imagenes que entrega la API
+const imagenesSidebar = ref([])
 
-const slides = [
-    { src: busImg, alt: 'Slide 1' },
-    { src: busElectricoImg, alt: 'Slide 2' },
-    { src: busesImg, alt: 'Slide 3' },
-    { src: busetasImg, alt: 'Slide 4' },
-    { src: imagesImg, alt: 'Slide 5' },
-]
+const slides = ref([])
 
 const slideActual = ref(0)
 const cargandoTarjetas = ref(true)
@@ -260,11 +243,13 @@ function irASlide(index) {
 }
 
 function moverAdelante() {
-    slideActual.value = (slideActual.value + 1) % slides.length
+    if (!slides.value.length) return
+    slideActual.value = (slideActual.value + 1) % slides.value.length
 }
 
 function moverAtras() {
-    slideActual.value = (slideActual.value - 1 + slides.length) % slides.length
+    if (!slides.value.length) return
+    slideActual.value = (slideActual.value - 1 + slides.value.length) % slides.value.length
 }
 
 function iniciarAutoplay() {
@@ -281,9 +266,28 @@ onMounted(() => {
 })
 onUnmounted(detenerAutoplay)
 
+async function cargarImagenesApi() {
+    try {
+        const [imagenesSlides, imagenesLaterales] = await Promise.all([
+            obtenerImagenes('slides'),
+            obtenerImagenes('sidebar')
+        ])
+        if (imagenesSlides.length) {
+            slides.value = imagenesSlides
+            slideActual.value = 0
+        }
+        if (imagenesLaterales.length) {
+            imagenesSidebar.value = imagenesLaterales
+        }
+    } catch {
+        // Si la API no responde, las listas quedan vacias
+    }
+}
+
 async function cargarTarjetas() {
+    await cargarImagenesApi()
     await Promise.all([
-        Promise.all([...noticias, ...imagenesSidebar].map(({ imagen, src }) => new Promise((resolve) => {
+        Promise.all([...noticias, ...imagenesSidebar.value].map(({ imagen, src }) => new Promise((resolve) => {
             const imagenCargada = new Image()
             imagenCargada.onload = resolve
             imagenCargada.onerror = resolve
@@ -295,6 +299,7 @@ async function cargarTarjetas() {
 }
 
 const menuAbierto = ref(false)
+const logo = urlImagen('logos', 'logo1.png')
 
 function toggleMenu() {
     menuAbierto.value = !menuAbierto.value

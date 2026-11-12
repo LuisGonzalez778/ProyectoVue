@@ -1,5 +1,5 @@
 <template>
-    <ComponentAtencionUsuario />
+    <ComponentAtencionUsuario></ComponentAtencionUsuario>
 </template>
 
 <script>

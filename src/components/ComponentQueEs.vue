@@ -2,7 +2,7 @@
     <div class="pagina-info">
         <menu class="menu open-sans">
             <div class="menu-top">
-                <img src="@/assets/logo1.png" alt="Samaria Bus Route">
+                <img :src="logo" alt="Samaria Bus Route">
                 <div class="acciones">
                     <router-link class="btn-registrar" to="/registrar">Registrar</router-link>
                     <router-link class="btn-ingresar" to="/login">Ingresar</router-link>
@@ -25,7 +25,7 @@
                     <li class="item-menu item-menu-underline"><router-link to="/que-es">Que es</router-link></li>
                     <li class="item-menu item-menu-underline"><router-link to="/transparencia">Transparencia</router-link></li>
                     <li class="item-menu item-menu-underline"><router-link to="/gestion-tecnica">Gestion Tecnica</router-link></li>
-                    <li class="item-menu item-menu-underline"><router-link to="/atencion-usuario">Atencion Usuario</router-link></li>
+                    <li class="item-menu item-menu-underline"><a href="#">Atencion Usuario</a></li>
                 </ul>
                 <div class="acciones-mobile">
                     <router-link class="btn-registrar" to="/registrar">Registrar</router-link>
@@ -142,7 +142,7 @@
         <footer class="footer open-sans">
             <div class="footer-contenido">
                 <div class="footer-marca">
-                    <img src="@/assets/logo1.png" alt="Samaria Bus Route">
+                    <img :src="logo" alt="Samaria Bus Route">
                     <div class="footer-direccion">
                         <p><strong>Ubicación:</strong></p>
                         <p>Santa Marta, Magdalena</p>
@@ -182,9 +182,11 @@
 </template>
 
 <script setup>
+import { urlImagen } from '@/services/imagenes'
 import { ref } from 'vue'
 
 const menuAbierto = ref(false)
+const logo = urlImagen('logos', 'logo1.png')
 
 const rutas = [
     { numero: 1, nombre: 'Santa Rita', terminal: 'Gaira' },

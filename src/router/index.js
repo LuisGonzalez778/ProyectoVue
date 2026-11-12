@@ -5,10 +5,11 @@ import LoginView from '@/Views/LoginView.vue'
 import RegistroView from '@/Views/RegistroView.vue'
 import PrincipalView from '@/Views/PrincipalView.vue'
 import NoticiasView from '@/Views/NoticiasView.vue'
-import GestionTecnicaView from '@/Views/GestionTecnicaView.vue'
 import QueEsView from '@/Views/QueEsView.vue'
 import TransparenciaView from '@/Views/TransparenciaView.vue'
+import GestionTecnicaView from '@/Views/GestionTecnicaView.vue'
 import AtencionClienteView from '@/Views/AtencionClienteView.vue'
+import { estaAutenticado } from '@/services/auth'
 
 const routes = [
   {
@@ -35,22 +36,21 @@ const routes = [
     path: '/noticias',
     name: 'noticias',
     component: NoticiasView
-  }
-  ,
+  },
   {
     path: '/que-es',
-    name: 'Quees',
+    name: 'que-es',
     component: QueEsView
   },
   {
-    path: '/gestion-tecnica',
-    name: 'GestionTecnica',
-    component: GestionTecnicaView
+    path: '/transparencia',
+    name: 'transparencia',
+    component: TransparenciaView
   },
   {
-    path: '/transparencia',
-    name: 'Transparencia',
-    component: TransparenciaView
+    path: '/gestion-tecnica',
+    name: 'gestion-tecnica',
+    component: GestionTecnicaView
   },
   {
     path: '/atencion-cliente',
@@ -61,7 +61,21 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior() {
+    return { top: 0 }
+  }
+})
+
+// Las rutas con meta: { requiereAuth: true } solo se abren con sesion iniciada.
+// Quien ya inicio sesion no necesita volver a /login ni /registrar.
+router.beforeEach((to) => {
+  if (to.meta.requiereAuth && !estaAutenticado()) {
+    return { path: '/login', query: { redirect: to.fullPath } }
+  }
+  if ((to.name === 'login' || to.name === 'registrar') && estaAutenticado()) {
+    return { path: '/' }
+  }
 })
 
 export default router
