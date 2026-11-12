@@ -2,143 +2,182 @@
     <div>
         <div>
             <!DOCTYPE html>
-<html lang="en">
+            <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atención Usuario - Transporte Público</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
-</head>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Atención Usuario - Transporte Público</title>
+                <link rel="stylesheet" href="styles.css">
+                <link rel="preconnect" href="https://fonts.googleapis.com">
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+                <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+            </head>
 
-<body class="atencion-usuario">
-    <menu class="menu open-sans">
-        <div class="menu-top">
-            <img src="imagenes/logo1.png" alt="Logo">
-            <div class="acciones">
-                <button class="btn-registrar"><a href="registrar.html">Registrar</a></button>
-                <button class="btn-ingresar"><a href="login.html">Ingresar</a></button>
-            </div>
-            <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Abrir menú" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-        <nav class="navegacion" id="navegacion">
-            <li class="item-menu item-menu-underline"><a href="index.html">Inicio</a></li>
-            <li class="item-menu item-menu-underline">Que es</li>
-            <li class="item-menu item-menu-underline">Transparencia</li>
-            <li class="item-menu item-menu-underline">Gestion Tecnica</li>
-            <li class="item-menu item-menu-underline"><a href="atencionUsuario.html">Atencion Usuario</a></li>
-            <div class="acciones-mobile">
-                <button class="btn-registrar"><a href="registrar.html">Registrar</a></button>
-                <button class="btn-ingresar"><a href="login.html">Ingresar</a></button>
-            </div>
-        </nav>
-    </menu>
+            <body class="atencion-usuario">
+                <menu class="menu open-sans">
+                    <div class="menu-top">
+                        <img :src="logo1Image" alt="Logo">
+                        <div class="acciones">
+                            <button class="btn-registrar"><a href="registrar.html">Registrar</a></button>
+                            <button class="btn-ingresar"><a href="login.html">Ingresar</a></button>
+                        </div>
+                        <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Abrir menú" aria-expanded="false">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                    </div>
+                    <nav class="navegacion" id="navegacion">
+                        <li class="item-menu item-menu-underline"><router-link to="/">Inicio</router-link></li>
+                        <li class="item-menu item-menu-underline"><router-link to="/que-es">Que es</router-link></li>
+                        <li class="item-menu item-menu-underline"><router-link to="/transparencia">Transparencia</router-link></li>
+                        <li class="item-menu item-menu-underline"><router-link to="/gestion-tecnica">Gestion Tecnica</router-link></li>
+                        <li class="item-menu item-menu-underline"><router-link to="/atencion-cliente">Atencion Usuario</router-link></li>
+                        <div class="acciones-mobile">
+                            <button class="btn-registrar"><a href="registrar.html">Registrar</a></button>
+                            <button class="btn-ingresar"><a href="login.html">Ingresar</a></button>
+                        </div>
+                    </nav>
+                </menu>
 
-    <div class="banner-fila noticias-banner">
-        <h1>Atención al Usuario</h1>
-        <h2>Cuéntanos tu experiencia y recibe respuesta pronta de nuestro equipo de atención.</h2>
-    </div>
+                <div class="banner-fila noticias-banner">
+                    <h1>Atención al Usuario</h1>
+                    <h2>Cuéntanos tu experiencia y recibe respuesta pronta de nuestro equipo de atención.</h2>
+                </div>
 
-    <main class="contenido-principal open-sans">
-        <section class="seccion-noticias">
-            <h2 class="titulo-seccion">Formulario de Quejas</h2>
-            <form id="form-queja" class="form-quejas" onsubmit="return enviarQueja()">
-                <div class="form-group">
-                    <label for="text-nombre-queja">Nombre</label>
-                    <input id="text-nombre-queja" type="text" placeholder="Tu nombre completo">
-                </div>
-                <div class="form-group">
-                    <label for="text-documento">Documento</label>
-                    <input id="text-documento" type="text" placeholder="Número de documento">
-                </div>
-                <div class="form-group">
-                    <label for="select-tipo-queja">Tipo de queja</label>
-                    <select id="select-tipo-queja">
-                        <option value="">Selecciona un tipo de queja</option>
-                        <option value="Servicio">Servicio</option>
-                        <option value="Tarifas">Tarifas</option>
-                        <option value="Infraestructura">Infraestructura</option>
-                        <option value="Atencion">Atencion al cliente</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="text-descripcion-queja">Descripción de la queja</label>
-                    <textarea id="text-descripcion-queja" rows="5" placeholder="Describe tu queja con detalle"></textarea>
-                </div>
-                <div id="mensaje-warning-queja" class="mensaje-warning"></div>
-                <div id="mensaje-success-queja" class="mensaje-success"></div>
-                <button class="btn-ver-mas" type="submit">Enviar Queja</button>
-            </form>
-        </section>
+                <main class="contenido-principal open-sans">
+                    <section class="seccion-noticias">
+                        <h2 class="titulo-seccion">Formulario de Quejas</h2>
+                        <form id="form-queja" class="form-quejas" @submit.prevent="enviarQueja">
+                            <div class="form-group">
+                                <label for="text-nombre-queja">Nombre</label>
+                                <input id="text-nombre-queja" type="text" placeholder="Tu nombre completo">
+                            </div>
+                            <div class="form-group">
+                                <label for="text-documento">Documento</label>
+                                <input id="text-documento" type="text" placeholder="Número de documento">
+                            </div>
+                            <div class="form-group">
+                                <label for="select-tipo-queja">Tipo de queja</label>
+                                <select id="select-tipo-queja">
+                                    <option value="">Selecciona un tipo de queja</option>
+                                    <option value="Servicio">Servicio</option>
+                                    <option value="Tarifas">Tarifas</option>
+                                    <option value="Infraestructura">Infraestructura</option>
+                                    <option value="Atencion">Atencion al cliente</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="text-descripcion-queja">Descripción de la queja</label>
+                                <textarea id="text-descripcion-queja" rows="5" placeholder="Describe tu queja con detalle"></textarea>
+                            </div>
+                            <div id="mensaje-warning-queja" class="mensaje-warning"></div>
+                            <div id="mensaje-success-queja" class="mensaje-success"></div>
+                            <button class="btn-ver-mas" type="submit">Enviar Queja</button>
+                        </form>
+                    </section>
 
-        <aside class="sidebar">
-            <h3>Contacto</h3>
-            <p>Si deseas también puedes comunicarte vía telefónica o por la app oficial para dar seguimiento a tu queja.</p>
-            <p>Registra tu caso con número de documento para un proceso más rápido y transparente.</p>
-            <img src="img/trabajo.png" alt="Atención al usuario" class="img-sidebar">
-        </aside>
-    </main>
+                    <aside class="sidebar">
+                        <h3>Contacto</h3>
+                        <p>Si deseas también puedes comunicarte vía telefónica o por la app oficial para dar seguimiento a tu queja.</p>
+                        <p>Registra tu caso con número de documento para un proceso más rápido y transparente.</p>
+                        <img src="img/trabajo.png" alt="Atención al usuario" class="img-sidebar">
+                    </aside>
+                </main>
 
-    <footer class="footer open-sans">
-        <div class="footer-contenido">
-            <div class="footer-marca">
-                <h2 class="footer-logo">Logo</h2>
-                <div class="footer-direccion">
-                    <p><strong>Address:</strong></p>
-                    <p>123 Main Street, City</p>
-                    <p>State Province, Country</p>
-                </div>
-                <div class="footer-redes">
-                    <i class="fa fa-instagram"></i>
-                    <i class="fa fa-facebook"></i>
-                    <i class="fa fa-twitter"></i>
-                </div>
-            </div>
-            <div class="footer-columnas">
-                <div class="footer-columna">
-                    <h4 class="footer-titulo-col">Column one</h4>
-                    <li class="footer-link">Link one</li>
-                    <li class="footer-link">Link two</li>
-                    <li class="footer-link">Link three</li>
-                    <li class="footer-link">Link four</li>
-                </div>
-                <div class="footer-columna">
-                    <h4 class="footer-titulo-col">Column two</h4>
-                    <li class="footer-link">Link five</li>
-                    <li class="footer-link">Link six</li>
-                    <li class="footer-link">Link seven</li>
-                    <li class="footer-link">Link eight</li>
-                </div>
-                <div class="footer-columna">
-                    <h4 class="footer-titulo-col">Column three</h4>
-                    <li class="footer-link">Link nine</li>
-                    <li class="footer-link">Link ten</li>
-                    <li class="footer-link">Link eleven</li>
-                    <li class="footer-link">Link twelve</li>
-                </div>
-            </div>
-        </div>
-    </footer>
+                <footer class="footer open-sans">
+                    <div class="footer-contenido">
+                        <div class="footer-marca">
+                            <h2 class="footer-logo">Logo</h2>
+                            <div class="footer-direccion">
+                                <p><strong>Address:</strong></p>
+                                <p>123 Main Street, City</p>
+                                <p>State Province, Country</p>
+                            </div>
+                            <div class="footer-redes">
+                                <i class="fa fa-instagram"></i>
+                                <i class="fa fa-facebook"></i>
+                                <i class="fa fa-twitter"></i>
+                            </div>
+                        </div>
+                        <div class="footer-columnas">
+                            <div class="footer-columna">
+                                <h4 class="footer-titulo-col">Column one</h4>
+                                <li class="footer-link">Link one</li>
+                                <li class="footer-link">Link two</li>
+                                <li class="footer-link">Link three</li>
+                                <li class="footer-link">Link four</li>
+                            </div>
+                            <div class="footer-columna">
+                                <h4 class="footer-titulo-col">Column two</h4>
+                                <li class="footer-link">Link five</li>
+                                <li class="footer-link">Link six</li>
+                                <li class="footer-link">Link seven</li>
+                                <li class="footer-link">Link eight</li>
+                            </div>
+                            <div class="footer-columna">
+                                <h4 class="footer-titulo-col">Column three</h4>
+                                <li class="footer-link">Link nine</li>
+                                <li class="footer-link">Link ten</li>
+                                <li class="footer-link">Link eleven</li>
+                                <li class="footer-link">Link twelve</li>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
 
-    <script src="script1.js"></script>
-</body>
+            </body>
 
-</html>
+            </html>
         </div>
     </div>
 </template>
 
 <script>
-export default {
+import logo1Image from '@/assets/logo1.png'
 
+export default {
+    data() {
+        return {
+            logo1Image
+        }
+    },
+    methods: {
+        enviarQueja() {
+            const nombre = document.getElementById('text-nombre-queja').value;
+            const documento = document.getElementById('text-documento').value;
+            const tipoQueja = document.getElementById('select-tipo-queja').value;
+            const descripcion = document.getElementById('text-descripcion-queja').value;
+
+            const mensajeWarning = document.getElementById('mensaje-warning-queja');
+            const mensajeSuccess = document.getElementById('mensaje-success-queja');
+
+            if (nombre === '') {
+                mensajeWarning.innerHTML = 'Por favor digite su nombre';
+                mensajeWarning.style.display = 'block';
+                return false;
+            } else if (documento === '') {
+                mensajeWarning.innerHTML = 'Por favor digite su documento';
+                mensajeWarning.style.display = 'block';
+                return false;
+            } else if (tipoQueja === '') {
+                mensajeWarning.innerHTML = 'Por favor seleccione el tipo de queja';
+                mensajeWarning.style.display = 'block';
+                return false;
+            } else if (descripcion === '') {
+                mensajeWarning.innerHTML = 'Por favor escriba la descripción de la queja';
+                mensajeWarning.style.display = 'block';
+                return false;
+            } else {
+                mensajeSuccess.innerHTML = 'Tu queja fue enviada correctamente. Gracias por informarnos.';
+                mensajeSuccess.style.display = 'block';
+                mensajeWarning.style.display = 'none';
+                return false;
+            }
+        }
+    }
 }
 </script>
 
@@ -583,7 +622,7 @@ export default {
 }
 
 .atencion-usuario {
-    background: url('imagenes/bus1.jpeg') center/cover no-repeat fixed;
+    background: url('../assets/imagenes/bus1.jpeg') center/cover no-repeat fixed;
 }
 
 .atencion-usuario .banner-fila.noticias-banner {

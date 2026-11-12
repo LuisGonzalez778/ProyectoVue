@@ -25,7 +25,7 @@
                     <li class="item-menu item-menu-underline"><router-link to="/que-es">Que es</router-link></li>
                     <li class="item-menu item-menu-underline"><router-link to="/transparencia">Transparencia</router-link></li>
                     <li class="item-menu item-menu-underline"><router-link to="/gestion-tecnica">Gestion Tecnica</router-link></li>
-                    <li class="item-menu item-menu-underline"><a href="#">Atencion Usuario</a></li>
+                    <li class="item-menu item-menu-underline"><router-link to="/atencion-usuario">Atencion Usuario</router-link></li>
                 </ul>
                 <div class="acciones-mobile">
                     <router-link class="btn-registrar" to="/registrar">Registrar</router-link>

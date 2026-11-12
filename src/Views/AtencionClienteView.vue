@@ -1,13 +1,13 @@
 <template>
-    <ComponentAtencionCliente></ComponentAtencionCliente>
+    <ComponentAtencionUsuario />
 </template>
 
 <script>
-import ComponentGestionTecnica from '@/components/ComponentGestionTecnica.vue';
+import ComponentAtencionUsuario from '@/components/ComponentAtencionUsuario.vue';
 
 export default {
-    components:{
-        ComponentGestionTecnica
+    components: {
+        ComponentAtencionUsuario
     }
 }
 </script>
