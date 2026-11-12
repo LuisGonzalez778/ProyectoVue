@@ -6,6 +6,9 @@ import ComponentNoticias from './components/ComponentNoticias.vue'
 import ComponnentsPrincipal from './components/ComponnentsPrincipal.vue'
 import ComponnentsRegistro from './components/ComponnentsRegistro.vue'
 import ComponnentsLogin from './components/ComponnentsLogin.vue'
+import ComponentQueEs from './components/ComponentQueEs.vue'
+import ComponentTransparencia from './components/ComponentTransparencia.vue'
+import ComponentGestionTecnica from './components/ComponentGestionTecnica.vue'
 import 'primevue/resources/themes/lara-light-blue/theme.css'
 import 'primevue/resources/primevue.min.css'
 
@@ -17,5 +20,8 @@ app.component('ComponentNoticias', ComponentNoticias)
 app.component('ComponnentsLogin', ComponnentsLogin)
 app.component('ComponnentsPrincipal', ComponnentsPrincipal)
 app.component('ComponnentsRegistro', ComponnentsRegistro)
+app.component('ComponentQueEs', ComponentQueEs)
+app.component('ComponentTransparencia', ComponentTransparencia)
+app.component('ComponentGestionTecnica', ComponentGestionTecnica)
 
 app.mount('#app')
